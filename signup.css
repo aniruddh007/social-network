@@ -1,0 +1,134 @@
+* {
+    /* margin: 0px;
+    padding: 0px; */
+    --background_color: rgb(177, 177, 221);
+    --border_color : rgb(143, 125, 207);
+}
+body{
+    background-color: var(--background_color);
+}
+.main-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    font-size: 18px;
+}
+.main-heading{
+    font-size: 30px;
+    font-weight: bold;
+}
+.frame {
+    background-color: white;
+    padding: 30px;
+    width: 50%;
+    border-radius: 20px;
+}
+
+.form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* .file-upload input{
+    all: unset;
+} */
+input {
+    border: 2px solid var(--border_color);
+    background-color: rgb(236, 233, 248);
+    border-radius: 4px;
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+}
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 40%;
+    gap: 10px;
+}
+.profile img {
+    width: 35%;
+    border-radius: 50%;
+}
+#file_upload {
+    display: none;
+}
+#image_preview{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border : 5px solid white ;
+}
+.upload{
+    border: 2px solid var(--border_color);
+    color: var(--border_color);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+}
+.cur{
+    cursor: pointer;
+}
+.fullname {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dob {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.email {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pass {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+#pass-text {
+    font-size: 12px;
+    color: gray;
+}
+
+.left {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.right {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.btn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn button {
+    border: 2px solid var(--border_color);
+    color: white;
+    background-color: rgb(85, 46, 224);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+}

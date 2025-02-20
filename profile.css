@@ -1,0 +1,174 @@
+body{
+    background-color: rgb(177, 177, 221);
+}
+.main_heading{
+    font-size: 30px;
+    font-weight: bold;
+}
+.main_body{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.left{
+    width: 30%;
+}
+.right{
+    width: 65%;
+}
+.profile_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+}
+#add_post_card{
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.text{
+    font-weight: bold;
+    font-size: 18px;
+}
+textarea{
+    width: 100%;
+    box-sizing: border-box;
+}
+.profile_photo{
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+.profile_photo img {
+    border-radius: 50%;
+    width: 60%;
+    height: 60%;
+}
+.profile_photo:hover .edit {
+    display: block;
+}
+.profile_photo.editing .edit {
+    display: block;
+}
+
+.cur{
+    cursor: pointer;
+    color: rgb(77, 95, 232);
+    font-weight: bold;
+    font-size: 15px;
+}
+#file_upload{
+    display: none;
+}
+#upload_pic{
+    display: none;
+}
+.edit{
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    display: none;
+    cursor: pointer;
+}
+#profile_preview{
+    width: 70%;
+    height: 70%;
+    aspect-ratio: 1/1;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border : 5px solid white ;
+}
+#image_preview{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.post_area{
+    padding: 5px;
+    border-radius:5px ;
+    background-color: rgb(199, 202, 232) ;
+}
+#caption{
+    all: unset;
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    background-color:rgb(199, 202, 232) ;
+}
+.post_button{
+    display: flex;
+    justify-content: space-between;
+}
+.add_post{
+    width: 25%;
+    height: 30px;
+    background-color: rgb(77, 95, 232);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.post_card{
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.post_card pre{
+    /* all: unset; */
+    display: inline;
+}
+.header_body{
+    display: flex;
+    justify-content: space-between;
+}
+.photo{
+    width: 15%;
+}
+.photo img{
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+.caption{
+    width: 70%;
+    display: flex;
+    font-size: 17px;
+    flex-direction: column;
+}
+.caption p {
+    font-size: 14px;
+}
+.close{
+    width: 5%;
+}
+.visual_content img{
+    border-radius: 10px;
+}
+a{
+    text-decoration: none;
+}
+
+@media (max-width : 735px) {
+    .main_body {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .left {
+        width: 100%;
+    }
+
+    .right {
+        width: 100%;
+    }
+}
