@@ -1,49 +1,74 @@
 <?php
 include 'connection.php';
 $insert = false;
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!$conn) {
-        die("Connection to this database failed due to" . mysqli_connect_error());
+
+class User
+{
+    private $db;
+
+    public function __construct(Database $db)
+    {
+        $this->db = $db;
     }
 
+    public function register($full_name, $email, $password, $dob, $image_loc, $image_name)
+    {
+        $full_name = $this->db->escapeString($full_name);
+        $email = $this->db->escapeString($email);
+        $dob = $this->db->escapeString($dob);
 
+        $q = "select * from user_info where user_id = '$email'";
+        $result = $this->db->query($q);
+        $result = mysqli_fetch_assoc($result);
+
+
+        if ( $result ){
+            // echo "Inside block ";
+            return false ;
+        } else {
+            $ext = pathinfo($image_name, PATHINFO_EXTENSION);
+            $dest_add = "profile_images/" . $email . '.' . $ext;
+
+            if (move_uploaded_file($image_loc, $dest_add)) {
+                $hashed = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO `user_info` (`user_id`, `full_name`, `password`, `profile_pic`, `email_address`, `dob`) 
+                    VALUES ('$email', '$full_name', '$hashed', '$dest_add', '$email', '$dob')";
+
+                if ($this->db->query($sql)) {
+                    return true; // Registration successful
+                } else {
+                    // Handle database error
+                    echo "Error: " . $this->db->getConnection()->error;
+                    return false;
+                    
+                }
+            } else {
+                return false; // Image upload failed
+            }
+        }
+    }
+}
+
+// Instantiate Database and User objects
+$db = new Database();
+$user = new User($db);
+
+$insert = false;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $image_loc = $_FILES['profile_picture']['tmp_name'];
     $image_name = $_FILES['profile_picture']['name'];
-    // print_r($image_name);
-    $user_id = $_POST['user_id'];
-    $ext = pathinfo($image_name, PATHINFO_EXTENSION);
-    $dest_add = "profile_images/" . $user_id . '.' . $ext;
-    move_uploaded_file($image_loc, $dest_add);
-
-
-
     $full_name = $_POST['full_name'];
     $email = $_POST['user_id'];
     $password = $_POST['password'];
     $dob = $_POST['dob'];
-    
-    $hashed = password_hash($password , PASSWORD_DEFAULT);
-    // sanitize user inputs 
 
-    $user_id = mysqli_real_escape_string($conn, $user_id);
-    $full_name = mysqli_real_escape_string($conn, $full_name);
-    $email = mysqli_real_escape_string($conn, $email);
-    // $password = mysqli_real_escape_string($conn, $password);
-    $dob = mysqli_real_escape_string($conn, $dob);
-
-    // image upload code 
-
-
-    $sql = "INSERT INTO `user_info` (`user_id`, `full_name`,  `password`, `profile_pic`, `email_address` ,`dob` ) VALUES ('$user_id', '$full_name', '$hashed', '$dest_add' , '$email' , '$dob')";
-
-    if ($conn->query($sql) === true ) { 
+    if ($user->register($full_name, $email, $password, $dob, $image_loc, $image_name)) {
         $insert = true;
         header("Location: login.php");
         exit();
     } else {
-        echo "Error : $sql <br> $conn->error";
+        echo "<script>alert('Registration failed. Please check the form and try again.');</script>";
     }
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -54,10 +79,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
     <link rel="stylesheet" href="signup.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
 </head>
 <script>
     $(document).ready(function() {
+        // date not exceed the current date 
+        const today = new Date().toISOString().split('T')[0];
+        $('#dob').attr('max', today);
+        
         $("#file_upload").change(function() {
             if (this.files && this.files[0]) {
                 let reader = new FileReader();
@@ -71,6 +100,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $(".form-area").submit(function(event) {
             const password = $('#password').val();
             const confirm = $('#confirm').val();
+            const date = $('#dob').val();
+            let dob = new Date(date);
+            let current = new Date();
+            let age = current.getFullYear() - dob.getFullYear();
+            let monthdiff = current.getMonth() - dob.getMonth();
+            if (monthdiff < 0 || (monthdiff === 0 && current.getDate() < date.getDate())) {
+                age--;
+                if (age < 18) {
+                    alert("your age should be greater than 18 years");
+                    event.preventDefault();
+                }
+            }
             if (password != confirm) {
                 alert("Password do not match !");
                 event.preventDefault();
@@ -96,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="file_upload">
                             <span class="cur">Choose Profile Pic </span>
                         </label>
-                        <input type="file" id="file_upload" accept="image/*" name="profile_picture" required>
+                        <input type="file" id="file_upload" accept="image/*" name="profile_picture">
                     </div>
                 </div>
                 <div class="fullname">

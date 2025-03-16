@@ -2,36 +2,50 @@
 $login = false;
 $showError = false;
 include 'connection.php';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!$conn) {
-        die("Connection to this database failed due to" . mysqli_connect_error());
+class User {
+    private $db;
+
+    public function __construct(Database $db) {
+        $this->db = $db;
     }
+
+    public function login($username, $password) {
+        $username = $this->db->escapeString($username);
+
+        $sql = "SELECT password FROM user_info WHERE user_id = '$username'";
+        $result = $this->db->query($sql);
+        $result = mysqli_fetch_assoc($result);
+
+        if (isset($result)) {
+            $hashedPassword = $result['password'];
+            if (password_verify($password, $hashedPassword)) {
+                session_start();
+                $_SESSION["username"] = $username;
+                return true; // Login successful
+            }
+        }
+        return false; // Login failed
+    }
+}
+
+
+// Instantiate Database and User objects
+$db = new Database();
+$user = new User($db);
+
+$loginSuccessful = false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["user_name"];
     $password = $_POST["password"];
-    $username = mysqli_real_escape_string($conn, $username);
-    $password = mysqli_real_escape_string($conn, $password);
 
-    $sql = "select password from user_info where user_id = '$username' ";
-    $result = mysqli_query($conn, $sql);
-    $result = mysqli_fetch_assoc($result);
-    if(isset($result)){
-    $hashed = $result['password'];
-    // echo $hashed;
-    if (password_verify($password, $hashed)){
-        $login = true;
-        session_start();
-        $_SESSION["username"] = $username;
-        echo $_SESSION["username"];
+    if ($user->login($username, $password)) {
+        $loginSuccessful = true;
         header("Location: profile.php");
         exit();
+    } else {
+        echo "<script>alert('Incorrect username or password.');</script>";
     }
-    else{
-        echo "<script>alert('Incorrect Password'); </script>";
-    }
-}
-else{
-    echo "<script>alert('Please register ! Not a valid account '); </script>";
-}
 }
 ?>
 

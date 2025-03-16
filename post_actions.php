@@ -1,5 +1,9 @@
 <?php
-
+$server = "localhost";
+$username = "root";
+$password = "";
+$database = "social_network";
+$conn = mysqli_connect($server, $username, $password, $database);
 // delete post 
 if (isset($_GET['action']) && $_GET['action'] == 'delete_post' && isset($_GET['id'])) {
     $p_Id = $_GET['id'];
@@ -21,10 +25,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete_post' && isset($_GET['i
 // dislike post
 if (isset($_GET['action']) && $_GET['action'] == 'dislike' && isset($_GET['id'])) {
     $p_Id = $_GET['id'];
-    $count = $_GET['count'];
+    $dislike = $_GET['dislikecount'];
+    $like = $_GET['likecount'];
     $p_Id = mysqli_real_escape_string($conn, $p_Id);
-    $count = mysqli_real_escape_string($conn, $count);
-    $q = "UPDATE `post` SET `dislikes` = $count WHERE `post`.`post_id` = $p_Id;";
+    $dislike = mysqli_real_escape_string($conn, $dislike);
+    $like = mysqli_real_escape_string($conn, $like);
+    $q = "UPDATE `post` SET `likes` = '$like', `dislikes` = '$dislike' WHERE `post`.`post_id` = $p_Id";
     $conn->query($q);
     exit();
 }
@@ -32,10 +38,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'dislike' && isset($_GET['id'])
 // like post
 if (isset($_GET['action']) && $_GET['action'] == 'like' && isset($_GET['id'])) {
     $p_Id = $_GET['id'];
-    $count = $_GET['count'];
+    $like = $_GET['likecount'];
+    $dislike = $_GET['dislikecount'];
     $p_Id = mysqli_real_escape_string($conn, $p_Id);
-    $count = mysqli_real_escape_string($conn, $count);
-    $q = "UPDATE `post` SET `likes` = $count WHERE `post`.`post_id` = $p_Id;";
+    $dislike = mysqli_real_escape_string($conn, $dislike);
+    $like = mysqli_real_escape_string($conn, $like);
+    $q = "UPDATE `post` SET `likes` = '$like', `dislikes` = '$dislike' WHERE `post`.`post_id` = $p_Id";
     $conn->query($q);
     exit();
 }

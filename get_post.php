@@ -1,9 +1,9 @@
 <?php
 include 'connection.php';
-function viewpost($conn, $user, $count, $post_count)
+function viewpost($Avtar, $count, $post_count)
 {
     for ($it = 0; $it < $count; $it++) {
-        $avtar = strval($user[0][3]);
+        $avtar = $Avtar;
         $pid = strval($post_count[$it][0]);
         $caption = strval($post_count[$it][2]);
         $address = strval($post_count[$it][3]);
@@ -17,7 +17,9 @@ function viewpost($conn, $user, $count, $post_count)
         echo  "<div class = 'caption'>$caption <p> posted on - {$date}</div>";
         echo  "<div class = 'close' > <i class='fa-solid fa-x'></i> </div>";
         echo "</div>";
+        if( $address != 'NULL' ){
         echo  "<div class='visual_content'><img src='{$address}' id='image_preview'></div>";
+        }
         echo "<div class='counter'>";
         echo "<a href='#' class='like-button' id='$pid'>";
         echo "Like   <i class='fa-regular fa-thumbs-up'>  $like</i>";
@@ -28,3 +30,4 @@ function viewpost($conn, $user, $count, $post_count)
         echo  "</div>";
     }
 }
+?>

@@ -158,6 +158,75 @@ a{
     text-decoration: none;
 }
 
+.text_box {
+    display: flex;
+    /* width: 90%; */
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 5px;
+    align-items: center;
+    padding-left: 20px;
+    position: relative;
+    display: inline-block;
+    padding-right: 10px;
+    border: 1px solid transparent;
+    /* cursor: pointer; */
+}
+
+.save{
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    top: 3px;
+    display: none;
+    cursor: pointer;
+}
+
+.save{
+    display: none;
+    cursor: pointer;
+}
+.edit{
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    display: none;
+    cursor: pointer;
+}
+
+.text_box:hover .edit{
+    top: 3px;
+    display: inline-block;
+    width: 1%;
+}
+.text_box:hover span{
+    display: inline-block;
+    width: 100%;
+}
+
+.text_box input {
+    all: unset;
+    /* border: 2px solid black; */
+    display: none;
+    /* padding: 5px; */
+    width: 90%;
+}
+.text_box.editing span {
+    display: none;
+}
+.text_box.editing .edit {
+    display: none;
+}
+.text_box.editing .savename{
+    display: inline-block;
+}
+.text_box.editing .save{
+    display: inline-block;
+}
+.text_box.editing input{
+    display: inline-block;
+}
+
 @media (max-width : 735px) {
     .main_body {
         flex-direction: column;
